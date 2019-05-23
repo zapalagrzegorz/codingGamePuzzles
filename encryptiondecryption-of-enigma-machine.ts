@@ -33,7 +33,7 @@ const Message: Message = {
       .map(value => rotors[1][value.charCodeAt(0) - 65])
       .map(value => rotors[2][value.charCodeAt(0) - 65]);
 
-    return Object.assign({}, this);
+    return this;
   },
 
   rotoringDecoding: function rotoringDecoding(
@@ -46,7 +46,8 @@ const Message: Message = {
       .map(value => String.fromCharCode(rotors[2].indexOf(value) + 65))
       .map(value => String.fromCharCode(rotors[1].indexOf(value) + 65))
       .map(value => String.fromCharCode(rotors[0].indexOf(value) + 65));
-    return Object.assign({}, this);
+
+    return this;
   },
 
   cesarShifting: function cesarShifting(input: string, shift: number) {
@@ -62,7 +63,7 @@ const Message: Message = {
       }
       return String.fromCharCode(UTFcharCode);
     });
-    return Object.assign({}, this);
+    return this;
   },
 
   cesarUnshifting: function cesarShifting(this: Message, shift: number): Message {
