@@ -35,7 +35,7 @@ function result() {
     }
   }
 
-  function calculateBraces() {
+  function validateBraces() {
     for (const element of expression.split('')) {
       catchClosingBrace();
 
@@ -76,7 +76,7 @@ function result() {
     console.log(result);
   }
 
-  calculateBraces();
+  validateBraces();
 
   catchClosingBrace();
 
