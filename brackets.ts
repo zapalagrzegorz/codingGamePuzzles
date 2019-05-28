@@ -1,77 +1,79 @@
 // https://www.codingame.com/ide/puzzle/brackets-extreme-edition
 
+
 // const expression = readline();
-const expression = '{(})';
+const expression = '{[{iHTSc}]}p(R)m(){q({})';
+// const expression = '][';
+// const expression = ']';
 
-// Write an action using console.log()
-// To debug: console.error('Debug messages...');
-let indexOpenedBrackets = 1;
+interface Brackets {
+  [propName: string]: number;
+}
 
-const brackets = {
-  '{': {
-    value: 0,
-    indexOpenedBrackets: 1,
-  },
-  '(': {
-    value: 0,
-    indexOpenedBrackets: 2,
-  },
-  '[': {
-    value: 0,
-    indexOpenedBrackets: 0,
-  },
-};
+function result() {
+  const brackets: Brackets = {
+    '{': 0,
+    '(': 0,
+    '[': 0,
+  };
 
-expression.split('');
+  let indexOpenedBrackets = 0;
 
-for (const element of expression.split('')) {
-  switch (element) {
-    case '{':
-      brackets['{'].value += 1;
-      brackets['{'].indexOpenedBrackets += indexOpenedBrackets;
-
-      indexOpenedBrackets++;
-
-      break;
-    case '}':
-      brackets['{'].value -= 1;
-      brackets['{'].indexOpenedBrackets -= indexOpenedBrackets;
-
-      indexOpenedBrackets--;
-      break;
-    case '(':
-      brackets['('].value -= 1;
-      brackets['('].indexOpenedBrackets -= indexOpenedBrackets;
-
-      indexOpenedBrackets--;
-      break;
-    case ')':
-      brackets['('].value -= 1;
-      brackets['('].indexOpenedBrackets -= indexOpenedBrackets;
-
-      indexOpenedBrackets--;
-      break;
-    case '[':
-      brackets['['].value -= 1;
-      brackets['['].indexOpenedBrackets -= indexOpenedBrackets;
-
-      indexOpenedBrackets--;
-      break;
-    case ']':
-      brackets['['].value -= 1;
-      brackets['['].indexOpenedBrackets -= indexOpenedBrackets;
-
-      indexOpenedBrackets--;
-      break;
-    default:
-      break;
+  function add(char: string) {
+    brackets[char] += ++indexOpenedBrackets;
   }
+  function remove(char: string) {
+    brackets[char] -= indexOpenedBrackets--;
+  }
+
+
+  for (const element of expression.split('')) {
+    if(indexOpenedBrackets === -1){
+      console.log('false');
+      return;
+    }
+
+    switch (element) {
+      case '{':
+        add('{');
+        break;
+
+      case '}':
+        remove('{');
+        break;
+
+      case '(':
+        add('(');
+        break;
+
+      case ')':
+        remove('(');
+        break;
+
+      case '[':
+        add('[');
+        break;
+
+      case ']':
+        remove('[');
+        break;
+    }
+  }
+
+  // corner case of single 'closing bracket'
+  if(indexOpenedBrackets === -1){
+    console.log('false');
+    return;
+  }
+
+  for (const bracket in brackets) {
+    if (brackets[bracket] !== 0) {
+      console.log('false');
+      return;
+    }
+  }
+
+  console.log('true');
 }
 
-for (const bracket in brackets){
-    if(brackets[bracket].value != 0){
-        return console.log('false');
-    }
-}
-console.log(Math.max(...brackets) ? 'false' : 'true');
-// console.log('true/false');
+result();
