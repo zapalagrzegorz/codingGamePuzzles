@@ -13,30 +13,36 @@ Given a number decide, whether it can be a meeting point of two or more digital 
 
 (Idea : BIO'99) */
 
-// const r1 = parseInt(readline());
 
-// weź liczbę 2 i sprawdź jej cyfrową rzekę
-// 2, 4, 8, 16, 23 ...  < r1
-const r = 13;
-let riverSource = 2;
+const r = 91004;
+
+
+let riverSource = Math.floor(r/4);
 let resultRiver = 'NO';
+let memory :number [] = [];
 
 function checkRiverSource(currentDigit: number) {
   do {
-    const sum = currentDigit
+
+    if(memory.indexOf(currentDigit) !== -1) {
+      break;
+    } else{
+      memory.push(currentDigit);
+    }
+    currentDigit += currentDigit
       .toString()
       .split('')
       .map(Number)
       .reduce((prev, curr) => prev + curr);
-    currentDigit += sum;
     
     if (currentDigit == r) {
       return true;
     }
+
   } while (currentDigit < r);
 }
 
-while (riverSource < r) {
+while (riverSource < r ) {
   if (checkRiverSource(riverSource)) {
     resultRiver = 'YES';
     break;
@@ -46,4 +52,3 @@ while (riverSource < r) {
 
 console.log(resultRiver)
 
-// console.log('YES|NO');
