@@ -13,42 +13,25 @@ Given a number decide, whether it can be a meeting point of two or more digital 
 
 (Idea : BIO'99) */
 
-
 const r = 91004;
+let isFound = 'NO';
 
+for (let i = 1; i < r; i++) {
+  let currentDigit = i;
 
-let riverSource = Math.floor(r/4);
-let resultRiver = 'NO';
-let memory :number [] = [];
-
-function checkRiverSource(currentDigit: number) {
-  do {
-
-    if(memory.indexOf(currentDigit) !== -1) {
-      break;
-    } else{
-      memory.push(currentDigit);
-    }
-    currentDigit += currentDigit
-      .toString()
-      .split('')
-      .map(Number)
-      .reduce((prev, curr) => prev + curr);
-    
-    if (currentDigit == r) {
-      return true;
-    }
-
-  } while (currentDigit < r);
-}
-
-while (riverSource < r ) {
-  if (checkRiverSource(riverSource)) {
-    resultRiver = 'YES';
+  currentDigit += currentDigit
+    .toString()
+    .split('')
+    .map(Number)
+    .reduce((prev, curr) => prev + curr);
+  if (currentDigit == r) {
+    isFound = 'YES';
     break;
   }
-  riverSource++;
 }
 
-console.log(resultRiver)
+console.log(isFound);
 
+// bez memoizacji
+// bez obliczania danej digital river do końca czyli bez liczenia 7, 14, 19, 29
+// bez dzielenia na funkcje - jest dużo szybciej i mieści się w granicach
