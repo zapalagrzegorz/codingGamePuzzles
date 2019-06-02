@@ -66,17 +66,35 @@ Constraints
     // var inputs = readline().split(' ');
     // const x = parseInt(inputs[0]);
     // const y = parseInt(inputs[1]);
+    
+    // koordynaty strzału x3, y3
     const x3 = 0;
     const y3 = 0;
     // 99 99
     // 101 101
     // 80 -101
     // 0 -100
+
+    // x odcinka p
+    let x4 = -10001;
+
     for(let i = 0; i < points.length; i++){
+        if(points[i].x > x4){
+            x4 = points[i].x
+        }; 
+    }
+
+    x4 = x4+1;
+
+    // koordynaty odcinków 
+    for(let i = 0; i < points.length; i++){
+        
         const x1 = points[i].x;
         const y1 = points[i].y;
 
         let x2, y2;
+        // co do zasady bierzemy kolejny odcinek
+        // dla ostatniego punktu, bierzemy pierwszy punkt
         if(i+1 < points.length){
             x2 = points[i+1].x;
             y2 = points[i+1].y;
@@ -84,22 +102,26 @@ Constraints
             x2 = points[0].x;
             y2 = points[0].y;
         }
-
+        
+        // 2. czy punkt należy do odcinka V
+        // 2.1 czy punkty są współliniowe. Wspólniowe gdy: 
         // det(a,b,c) = x1y2 + x2y3 + x3y1 - x3y2 - x1y3 - x2y1
-        const det = x1*y2 + x2+y3 + x3*y1 - x3*y2 - x1*y3 - x2*y1;
+        const det = x1*y2 + x2*y3 + x3*y1 - x3*y2 - x1*y3 - x2*y1;
+        // 2.2 min(x1, x2) <= x3 <= max(x1, x2) oraz min(y1, y2)<= y3 <= max(y1, y2)
         if(det === 0){
             if(Math.min(x1, x2) <= x3 && x3 <= Math.max(x1, x2) && Math.min(y1, y2)<= y3 && y3 <= Math.max(y1, y2)){
                 console.log('hit');
             }
-            
         }
-
+        // odcinek próbny p
+        // x3, y3 - x4, y3
+        // policzyć czy odcinek przecina dany bok i dodaj do sumy liczby przecinanych boków
 
     }
   }
 }());
 
-// 2. czy punkt należy do odcinka V
+
 // 3. stworzyć odcinek między punktem (x, y) a (największym x figury + 1, y)
 // 4. policzyć czy odcinek przecina dany bok
 // 5. czyl liczba jest parzystą czy nieparzysta
