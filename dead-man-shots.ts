@@ -20,109 +20,145 @@ Constraints
 -10000 < x,y < 10000
 
 */
+interface point {
+  x: number;
+  y: number;
+}
 
-(function () {
-  const N = 4;
-  const points = [];
-  for (let i = 0; i < N; i++) {
-    // var inputs = readline().split(' ');
-    // const x = parseInt(inputs[0]);
-    // const y = parseInt(inputs[1]);
-    const x1 = -100;
-    const y1 = -100;
-    
-    const x2 = 100;
-    const y2 = -100;
+function iloczyn(P1: point, P2: point, P3: point): number {
+  return (P2.x - P1.x) * (P3.y - P1.y) - (P3.x - P1.x) * (P2.y - P1.y);
+}
 
-    const x3 = 100;
-    const y3 = 100;
-
-    const x4 = -100;
-    const y4 = 100;
-
-    points.push({
-        x: x1,
-        y: y1,
-    });
-    points.push({
-        x: x2,
-        y: y2,
-    });
-    points.push({
-        x: x3,
-        y: y3,
-    });
-    points.push({
-        x: x4,
-        y: y4,
-    });
+function lezy_miedzy(P1: point, P2: point, P3: point) {
+  if (Math.min(P1.x, P2.x) <= P3.x && P3.x <= Math.max(P1.x, P2.x)) {
+    return true; 
   }
+}
+const points = [];
+//   const N = 4;
+//   for (let i = 0; i < N; i++) {
+// var inputs = readline().split(' ');
+// const x = parseInt(inputs[0]);
+// const y = parseInt(inputs[1]);
+const x1 = 0;
+const y1 = 0;
 
-// 2. czy punkt należy do odcinka 
-// http://www.algorytm.org/geometria-obliczeniowa/przecinanie-sie-odcinkow.html
+const x2 = 100;
+const y2 = 0;
 
-  const M = 5;
-  for (let i = 0; i < M; i++) {
-    // var inputs = readline().split(' ');
-    // const x = parseInt(inputs[0]);
-    // const y = parseInt(inputs[1]);
-    
-    // koordynaty strzału x3, y3
-    const x3 = 0;
-    const y3 = 0;
-    // 99 99
-    // 101 101
-    // 80 -101
-    // 0 -100
+const x3 = 150;
+const y3 = 50;
 
-    // x odcinka p
-    let x4 = -10001;
+const x4 = 100;
+const y4 = 100;
 
-    for(let i = 0; i < points.length; i++){
-        if(points[i].x > x4){
-            x4 = points[i].x
-        }; 
+const x5 = 0;
+const y5 = 100;
+
+points.push({
+  x: x1,
+  y: y1,
+});
+points.push({
+  x: x2,
+  y: y2,
+});
+points.push({
+  x: x3,
+  y: y3,
+});
+points.push({
+  x: x4,
+  y: y4,
+});
+points.push({
+  x: x5,
+  y: y5,
+});
+
+
+const M = 1;
+for (let i = 0; i < M; i++) {
+  // var inputs = readline().split(' ');
+  // const x = parseInt(inputs[0]);
+  // const y = parseInt(inputs[1]);
+
+  // koordynaty strzału
+  const Mx = 100;
+  const My = 50;
+
+  // punkt x końcowego punktu P, który jest na pewno poza figurą
+  const Px = 10001;
+
+  let numberOfCrossing = 0;
+  let isOnLine = false;
+
+  // koordynaty odcinków
+  for (let j = 0; j < points.length; j++) {
+    const W1x = points[j].x;
+    const W1y = points[j].y;
+
+    let W2x;
+    let W2y;
+
+    const punktPierwszy = {
+      x: W1x,
+      y: W1y,
+    };
+
+    // co do zasady bierzemy kolejny odcinek
+    // dla ostatniego punktu, bierzemy pierwszy punkt
+    if (j + 1 < points.length) {
+      W2x = points[j + 1].x;
+      W2y = points[j + 1].y;
+    } else {
+      W2x = points[0].x;
+      W2y = points[0].y;
     }
 
-    x4 = x4+1;
+    const punktDrugi: point = {
+      x: W2x,
+      y: W2y,
+    };
 
-    // koordynaty odcinków 
-    for(let i = 0; i < points.length; i++){
-        
-        const x1 = points[i].x;
-        const y1 = points[i].y;
 
-        let x2, y2;
-        // co do zasady bierzemy kolejny odcinek
-        // dla ostatniego punktu, bierzemy pierwszy punkt
-        if(i+1 < points.length){
-            x2 = points[i+1].x;
-            y2 = points[i+1].y;
-        } else{
-            x2 = points[0].x;
-            y2 = points[0].y;
-        }
-        
-        // 2. czy punkt należy do odcinka V
-        // 2.1 czy punkty są współliniowe. Wspólniowe gdy: 
-        // det(a,b,c) = x1y2 + x2y3 + x3y1 - x3y2 - x1y3 - x2y1
-        const det = x1*y2 + x2*y3 + x3*y1 - x3*y2 - x1*y3 - x2*y1;
-        // 2.2 min(x1, x2) <= x3 <= max(x1, x2) oraz min(y1, y2)<= y3 <= max(y1, y2)
-        if(det === 0){
-            if(Math.min(x1, x2) <= x3 && x3 <= Math.max(x1, x2) && Math.min(y1, y2)<= y3 && y3 <= Math.max(y1, y2)){
-                console.log('hit');
-            }
-        }
-        // odcinek próbny p
-        // x3, y3 - x4, y3
-        // policzyć czy odcinek przecina dany bok i dodaj do sumy liczby przecinanych boków
+    const strzalPoint: point = {
+      x: Mx,
+      y: My,
+    };
 
+    const strzalHelperPoint: point = {
+      x: Px,
+      y: My,
+    };
+
+    const S_1 = iloczyn(punktPierwszy, strzalPoint, punktDrugi);
+    const S_2 = iloczyn(punktPierwszy, strzalHelperPoint, punktDrugi);
+    const S_3 = iloczyn(strzalPoint, punktPierwszy, strzalHelperPoint);
+    const S_4 = iloczyn(strzalPoint, punktDrugi, strzalHelperPoint);
+
+    if (
+      ((S_1 > 0 && S_2 < 0) || (S_1 < 0 && S_2 > 0))
+      && ((S_3 < 0 && S_4 > 0) || (S_3 > 0 && S_4 < 0))
+    ) {
+      numberOfCrossing++;
+    } else if (S_1 == 0 && lezy_miedzy(punktPierwszy, punktDrugi, strzalPoint)) isOnLine = true;
+    else if (S_2 === 0 && lezy_miedzy(punktPierwszy, punktDrugi, strzalHelperPoint)) {
+      isOnLine = true;
+    } else if (S_3 === 0 && lezy_miedzy(strzalPoint, strzalHelperPoint, punktPierwszy)) {
+      isOnLine = true;
+    } else if (S_4 === 0 && lezy_miedzy(strzalPoint, strzalHelperPoint, punktDrugi)) {
+      isOnLine = true;
     }
   }
-}());
 
-
-// 3. stworzyć odcinek między punktem (x, y) a (największym x figury + 1, y)
-// 4. policzyć czy odcinek przecina dany bok
-// 5. czyl liczba jest parzystą czy nieparzysta
-// 3. dla kwadrata/prostokąta - to czy X jest mniejszy od punktu o największej wartości X i większy od punktu o najmniejszej wartości x
+  if (!isOnLine) {
+    if (numberOfCrossing !== 0 && numberOfCrossing % 2 == 1) {
+      console.log('hit');
+    } else {
+      console.log('miss');
+    }
+  } else {
+    console.log('hit');
+  }
+}
